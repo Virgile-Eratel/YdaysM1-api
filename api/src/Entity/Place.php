@@ -3,10 +3,27 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\PlaceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource(mercure: true)]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: "/get-all-places",
+        ),
+        new Post(),
+        new Get(
+            uriTemplate: "/get-one-place/{id}",
+        ),
+        new Put(),
+        new Delete(),
+    ]
+)]
 #[ORM\Entity(repositoryClass: PlaceRepository::class)]
 class Place
 {
