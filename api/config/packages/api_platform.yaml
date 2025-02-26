@@ -1,6 +1,10 @@
 api_platform:
     title: Ydays
     version: 1.0.0
+    formats:
+        jsonld: [ 'application/ld+json' ]
+        json: [ 'application/json' ]
+        multipart: ['multipart/form-data']
     # Mercure integration, remove if unwanted
     mercure:
         include_type: true
