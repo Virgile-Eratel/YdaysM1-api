@@ -31,18 +31,37 @@ class RegisterController
             return new JsonResponse(['error' => 'Email and password are required'], 400);
         }
 
+        // Vérifier que l'email n'existe pas déjà en base
+        $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+        if ($existingUser) {
+            return new JsonResponse(['error' => 'Email already in use'], 400);
+        }
+
         $user = new User();
         $user->setEmail($data['email']);
-        $user->setRoles(['ROLE_USER']);
 
-        // Encode le mot de passe
+        // Définir les rôles en s'assurant qu'un utilisateur ne peut pas s'ajouter `ROLE_ADMIN`
+        $validRoles = [User::ROLE_CLIENT, User::ROLE_OWNER]; // Rôles autorisés à l'inscription
+        $roles = isset($data['roles']) && is_array($data['roles']) ? array_intersect($data['roles'], $validRoles) : [];
+
+        if (empty($roles)) {
+            $roles = [User::ROLE_CLIENT];
+        }
+
+        $user->setRoles($roles);
+
+        // Encoder le mot de passe
         $hashedPassword = $this->passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
 
-        // Persist the user
+        // Sauvegarde en base
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        return new JsonResponse(['message' => 'User created successfully'], 201);
+        return new JsonResponse([
+            'message' => 'User created successfully',
+            'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
+        ], 201);
     }
 }
