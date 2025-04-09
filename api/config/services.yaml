@@ -24,3 +24,6 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Controller\RegisterController:
         tags: ['controller.service_arguments']
+
+    # Service personnalisé pour l'authentification JWT
+    App\Security\JWTAuthenticationSuccessHandler:
