@@ -9,8 +9,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\PlaceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[Vich\Uploadable]
@@ -74,9 +77,14 @@ class Place
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
+    #[ORM\OneToMany(mappedBy: 'place', targetEntity: Review::class, orphanRemoval: true)]
+    #[Groups(['place:read'])]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->reviews = new ArrayCollection();
     }
     public function setImageFile(?File $imageFile = null): void
     {
@@ -223,5 +231,53 @@ class Place
         $this->host = $host;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getPlace() === $this) {
+                $review->setPlace(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Calcule la note moyenne des avis
+     */
+    #[Groups(['place:read'])]
+    public function getAverageRating(): ?float
+    {
+        if ($this->reviews->isEmpty()) {
+            return null;
+        }
+
+        $sum = 0;
+        foreach ($this->reviews as $review) {
+            $sum += $review->getRating();
+        }
+
+        return $sum / $this->reviews->count();
     }
 }

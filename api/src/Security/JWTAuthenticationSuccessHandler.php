@@ -36,6 +36,12 @@ class JWTAuthenticationSuccessHandler extends BaseAuthenticationSuccessHandler
         /** @var UserInterface $user */
         $user = $token->getUser();
 
+        // Vérifier si l'utilisateur a une méthode getId()
+        if (method_exists($user, 'getId')) {
+            // Ajouter l'ID de l'utilisateur à la réponse
+            $data['userId'] = $user->getId();
+        }
+
         // Déterminer le rôle principal (owner ou user)
         $userRole = 'user'; // Par défaut
 
