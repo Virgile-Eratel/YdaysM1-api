@@ -39,24 +39,31 @@ class Place
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['place:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['place:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['place:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['place:read'])]
     private ?string $address = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['place:read'])]
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['place:read'])]
     private ?float $longitude = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['place:read'])]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true)]
@@ -66,12 +73,14 @@ class Place
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'places')]
+    #[Groups(['place:read'])]
     private ?User $host = null;
 
     #[Vich\UploadableField(mapping: 'place', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['place:read'])]
     private ?string $imageName = null;
 
     #[ORM\Column(nullable: true)]

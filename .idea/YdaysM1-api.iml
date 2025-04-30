@@ -134,8 +134,6 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/willdurand/negotiation" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/zozlak/rdf-constants" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/devizzent/cebe-php-openapi" />
-      <excludeFolder url="file://$MODULE_DIR$/api/vendor/icecave/parity" />
-      <excludeFolder url="file://$MODULE_DIR$/api/vendor/icecave/repr" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/jms/metadata" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/marc-mabe/php-enum" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/symfony/mime" />
@@ -143,6 +141,8 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/vich/uploader-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/doctrine/data-fixtures" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/doctrine/doctrine-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/stripe/stripe-php" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/symfony/polyfill-php84" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
