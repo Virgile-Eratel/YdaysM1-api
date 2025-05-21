@@ -36,6 +36,32 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $this->addReference('user-regular', $user);
 
+        // Créer des utilisateurs supplémentaires avec des noms réalistes
+        $users = [
+            ['email' => 'john.doe@example.com', 'role' => User::ROLE_USER, 'reference' => 'user-john'],
+            ['email' => 'emma.smith@example.com', 'role' => User::ROLE_USER, 'reference' => 'user-emma'],
+            ['email' => 'michael.brown@example.com', 'role' => User::ROLE_USER, 'reference' => 'user-michael'],
+            ['email' => 'sophia.jones@example.com', 'role' => User::ROLE_USER, 'reference' => 'user-sophia'],
+            ['email' => 'william.taylor@example.com', 'role' => User::ROLE_USER, 'reference' => 'user-william'],
+            ['email' => 'olivia.wilson@example.com', 'role' => User::ROLE_USER, 'reference' => 'user-olivia'],
+            ['email' => 'james.martin@example.com', 'role' => User::ROLE_USER, 'reference' => 'user-james'],
+            ['email' => 'charlotte.davis@example.com', 'role' => User::ROLE_USER, 'reference' => 'user-charlotte'],
+            ['email' => 'thomas.dupont@example.com', 'role' => User::ROLE_OWNER, 'reference' => 'user-thomas'],
+            ['email' => 'sophie.martin@example.com', 'role' => User::ROLE_OWNER, 'reference' => 'user-sophie'],
+            ['email' => 'lucas.bernard@example.com', 'role' => User::ROLE_OWNER, 'reference' => 'user-lucas'],
+            ['email' => 'camille.petit@example.com', 'role' => User::ROLE_OWNER, 'reference' => 'user-camille'],
+        ];
+
+        foreach ($users as $userData) {
+            $newUser = new User();
+            $newUser->setEmail($userData['email']);
+            $newUser->setRoles([$userData['role']]);
+            $hashedPassword = $this->passwordHasher->hashPassword($newUser, 'password123');
+            $newUser->setPassword($hashedPassword);
+            $manager->persist($newUser);
+            $this->addReference($userData['reference'], $newUser);
+        }
+
         $manager->flush();
     }
 }
